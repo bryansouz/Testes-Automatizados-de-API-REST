@@ -1,24 +1,13 @@
 /// <reference types="Cypress" />
 import { faker } from '@faker-js/faker';
-
+let id;
 
 context('Testes Automatizados de API REST ', () => {
-    let authorization;
-    let id;
+    
     beforeEach('login', () => {
-        cy.request({
-            method:'POST', 
-            url: 'http://localhost:3000/login', 
-            body: {
-                    "email":"fulano@qa.com",
-                    "password":"teste"
-                  }
-            }).then((response) => {
-                
-            authorization = response.body.authorization
-            expect(response.status).to.eq(200); 
-            expect(response.body.message).to.equal('Login realizado com sucesso');
-          });
+
+        cy.login("bryan@qa.com",'teste')
+
     });
 
 
@@ -97,8 +86,44 @@ context('Testes Automatizados de API REST ', () => {
         })
 
 
-});
 
 
+    });
+
+    describe("Refatoração do código", () =>{
+        
+        describe("Exercicio 1", ()=>{
+            
+            it.skip('Gerando token automático', () => {
+                cy.login("fulano@qa.com", "teste")
+            });
+        })
+        describe("Exercicio 2", ()=>{
+            it.skip('Gerando produtos diferentes com Math.random', () => {
+                cy.request({
+                    method: "POST",
+                    url: `http://localhost:3000/produtos/`,
+                    body: {
+                        "nome": `${faker.commerce.productName()}`,
+                        "preco": `${Math.abs(Math.round(Math.random() * 10))}`,
+                        "descricao": `${faker.commerce.productDescription()}`,
+                        "quantidade": `${Math.abs(Math.round(Math.random() * 10))}`
+                    },
+                    headers: { authorization: authorization}
+                     
+                }).then((response) => {
+                    
+                    expect(response.body.message).to.equal('Cadastro realizado com sucesso')
+                })
+            });
+        })
+        describe("Exercicio 3", ()=>{
+
+            it.only('Cadastrar produto como comando customizado', () => {
+                    
+               cy.cadastrar(faker.commerce.productName(),12,faker.commerce.productDescription(),1)
+            });
+        })
+    })
 
 })// end context
