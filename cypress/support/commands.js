@@ -24,12 +24,29 @@ Cypress.Commands.add('login', (email, password) => {
     }
   }).then((response) => {
     expect(response.body.message).to.equal('Login realizado com sucesso');
-    if(tokens.length > 0){
-      // tokens.splice(0, 1);
+    if(tokens != []){
+      tokens.splice(0, 2);
       
     }   
     tokens.push(response.body.authorization)
+    cy.log(tokens)
+  
   });
+});
+
+
+Cypress.Commands.add('token', (email, password) => {
+
+  cy.request({
+    method: 'POST', 
+    url: 'http://localhost:3000/login', 
+    body: {
+      "email": email,
+      "password": password
+    }
+  }).then(response =>{
+    return response.body.authorization
+  })
 });
 
   Cypress.Commands.add('cadastrar', (nome, preco,descricao,quantidade) => {
