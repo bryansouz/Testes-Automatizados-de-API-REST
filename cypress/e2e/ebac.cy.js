@@ -19,13 +19,6 @@ context('Testes Automatizados de API REST ', () => {
 
             it.only('Adicionando produto', () => {
                 let aut;
-              
-              cy.token('bryan@qa.com','teste').then(token => {
-                    // Armazena o token em uma propriedade do objeto "window"
-                    cy.window().then(win => {
-                      win.token = token
-                    })}
-                )
            
                 cy.request({
                     
